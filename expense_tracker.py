@@ -44,10 +44,19 @@ class BudgetLimit:
 """
 Unit tests for budget limit:
 
+Tests when a false is put in below
 200,0,3500.56,False,34
+
+Tests what code does when string is added
 200,"Tomato",45.56,90000,75.65
+
+Tests when everything is correct
 23.47,900.89,245,642,925
+
+Make sure code knows what to do when false
 298,87,0,0,0
+
+Sees what code does when their is less inputs than required
 358.09,78
 """
         
