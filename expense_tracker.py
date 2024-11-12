@@ -40,4 +40,14 @@ class BudgetLimit:
         
         self.budget_limit[category] = money_amount
         self.totalbudget += money_amount
+
+"""
+Unit tests for budget limit:
+
+200,0,3500.56,False,34
+200,"Tomato",45.56,90000,75.65
+23.47,900.89,245,642,925
+298,87,0,0,0
+358.09,78
+"""
         
