@@ -1,12 +1,24 @@
-class expense_tracker():
+class ExpenseTracker():
     """
     Obtains information of expenses inputed from user in order to keep track of monthly
     expenses.
     """
-    def __init__(housing_exp=0.0,internet_exp=0.0,entertainment_exp=0.0,groceries_exp=0.0,transportation_exp=0.0):
-        """
-        Initializes starting point as 0 for expenses. Makes sure we recieve an integer
-        """
+    def __init__(self,name):
+        self.all_expenses = {}
+        self.name = name
+
+    def input_monthly_expenses(self,expense,amount_for_expense):
+        if expense not in self.all_expenses:
+            self.all_expenses[expense] = amount_for_expense
+        elif expense in self.all_expenses:
+            self.all_expenses[expense] += amount_for_expense
+
+        total_expenses = 0
+        for each_expense in self.all_expenses.values():
+            total_expenses += each_expense
+        return total_expenses
+
+
 
 class BudgetLimit:
     
