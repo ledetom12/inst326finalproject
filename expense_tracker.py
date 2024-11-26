@@ -1,4 +1,7 @@
-class ExpenseTracker():
+
+import random
+
+class ExpenseTracker:
     """
     Obtains information of expenses inputed from user in order to keep track of monthly
     expenses.
@@ -17,7 +20,10 @@ class ExpenseTracker():
         for each_expense in self.all_expenses.values():
             total_expenses += each_expense
         return total_expenses
-
+    
+    def list_expenses(self):
+        
+        return self.all_expenses
 
 
 class BudgetLimit:
@@ -47,15 +53,14 @@ class BudgetLimit:
         parameters:
         category(str):  the category that the budget limit is set too
         money_amount(float): the amount that is spent in the category
-    
-    
+        
         """
-        if self.totalallocated + money_amount > self.total_budget:
+        maximum_allowed = self.total_budget * self.threshold
+        if self.totalallocated - self.budget_limit.get(category, 0) + money_amount > maximum_allowed:
             raise ValueError("Budget allocation exceeds total budget of 4000!")
         
-        if category in self.budget_limit:
         
-            self.totalallocated -= self.budget_limit[category]
+        self.totalallocated -= self.budget_limit.get(category, 0)
         self.budget_limit[category] = money_amount
         self.totalallocated += money_amount
     
@@ -76,22 +81,52 @@ class BudgetLimit:
         for value in adjusted_amount.values():
             self.totalallocated += value 
     
-"""
-Unit tests for budget limit:
-
-Tests when a false is put in below
-200,0,3500.56,False,34
-
-Tests what code does when string is added
-200,"Tomato",45.56,90000,75.65
-
-Tests when everything is correct
-23.47,900.89,245,642,925
-
-Make sure code knows what to do when false
-298,87,0,0,0
-
-Sees what code does when their is less inputs than required
-358.09,78
-"""
+    def delete_category(self, category):
         
+        if category in self.budget_limit:
+            self.totalallocated -= self.budget_limit.pop(category)
+            return f"Removed  budget for {category}"
+        else:
+            return f"Category {category} does not exist "
+
+    def all_items(self):
+        
+        return self.budget_limit
+
+class ExpenseLog:
+    
+    def __init__(self, name):
+        self.allexpense = {}
+        self.name = name
+    
+def budget_random(expenses, budget):
+        
+    categories = ["Housing", "Groceries", "Transportation","Entertainment","Healthcare"]
+    income = random.randint(4000,8000)
+    budget.total_budget = income
+    print(f"Randomly generated total income: ${income}")
+        
+    for category in categories:
+        try: 
+            randombudget = random.randint(400,1000)
+            budget.set_budget(randombudget, category)
+        except ValueError:
+            print("value does not work")
+        
+    for category in categories:
+        randomexpense = random.randint(100, 1400)
+        expenses.input_monthly_expenses(category, randomexpense)
+        print("random expenses: complete")
+            
+def main(sequences=True):
+
+    expensetracker = ExpenseTracker("User")
+    budgetlimit = BudgetLimit()
+    
+    if sequences:
+        budget_random(expensetracker, budgetlimit)
+    
+    expenselog = ExpenseLog(expensetracker, budgetlimit)
+    expenselog
+
+if __name__ == "__main__":
