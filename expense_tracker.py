@@ -32,11 +32,12 @@ class BudgetLimit:
     total_budget(float): the budget limit for the month, depending on the income
     """
 
-    def __init__(self, income):
+    def __init__(self, total_budget=4000, threshold = 0.8):
         
-        self.income = income
+        self.total_budget = total_budget
+        self.threshold = threshold
         self.budget_limit = {}
-        self.totalbudget = 0.0
+        self.totalallocated = 0.0
     
     def set_budget(self, money_amount, category):
         """
@@ -49,10 +50,32 @@ class BudgetLimit:
     
     
         """
+        if self.totalallocated + money_amount > self.total_budget:
+            raise ValueError("Budget allocation exceeds total budget of 4000!")
         
+        if category in self.budget_limit:
+        
+            self.totalallocated -= self.budget_limit[category]
         self.budget_limit[category] = money_amount
-        self.totalbudget += money_amount
-
+        self.totalallocated += money_amount
+    
+    def adjustments(self):
+        maximum_allowed = self.total_budget * self.threshold
+        if self.totalallocated <= maximum_allowed:
+            return None
+        reductionratio = maximum_allowed / self.totalallocated
+        adjusted_amount = {}
+        for category, amount in self.budget_limit.items():
+            adjusted_amount[category] = int(amount* reductionratio *100)/100
+        return adjusted_amount
+    
+    def update_budget_limits(self, adjusted_amount):
+        
+        self.budget_limit = adjusted_amount
+        self.totalallocated = 0
+        for value in adjusted_amount.values():
+            self.totalallocated += value 
+    
 """
 Unit tests for budget limit:
 
