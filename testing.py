@@ -1,4 +1,4 @@
-from argparse import ArgumentParser
+import Visualization as vz
 import random
 import pandas as pd
 import seaborn as sns
@@ -142,29 +142,6 @@ class ExpenseLog:
             self.expense_tracker.input_monthly_expenses(category, randomexpense)
         print("random expenses: complete")
             
-class Plots:
-    def __init__(self,expense_log_inst_list):
-        self.expense_list = []
-        self.budget_list = []
-        self.budget_and_expenses_list = []
-        for each_expense_inst in expense_log_inst_list:
-            expense_tracker = each_expense_inst.expense_tracker
-            budget_limit = each_expense_inst.budget_limit
-            for category,expenses in expense_tracker.list_expenses().items():
-                expense_dict = {"Key": "Expense", "Category": category, "Amount": expenses}
-                self.expense_list.append(expense_dict)
-            for category,budgeting in budget_limit.all_items().items():
-                budget_dict = {"Key": "Budget", "Category": category, "Amount": budgeting}
-                self.budget_list.append(budget_dict)
-        self.budget_and_expenses_list.extend(self.expense_list)
-        self.budget_and_expenses_list.extend(self.budget_list)
-
-    def plot_creations(self):
-        expenses_and_budget_df = pd.DataFrame(self.budget_and_expenses_list)
-        expenses_and_budget_plot = sns.barplot(data = expenses_and_budget_df, x = "Category", y = "Amount", hue = "Key")
-  
-        expenses_and_budget_plot.get_figure().savefig("Expenses and Budget Visualization.png", format = "png")
-
 def main():
     with open("Names.txt",'r') as file:
         all_names = file.read()
@@ -184,7 +161,7 @@ def main():
 
         expense_log_inst_list.append(expense_log_inst)
 
-    plots_inst = Plots(expense_log_inst_list)
+    plots_inst = vz.Plots(expense_log_inst_list)
 
     plots_inst.plot_creations()
 
