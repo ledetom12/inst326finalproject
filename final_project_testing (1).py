@@ -142,7 +142,7 @@ class ExpenseLog:
             self.expense_tracker.input_monthly_expenses(category, randomexpense)
         print("random expenses: complete")
             
-def vizualization(expense_log):
+def dataframe(expense_log):
     expenses = expense_log.expense_tracker.list_expenses()
     budgets = expense_log.budget_limit.all_items()
     categories = list(expenses.keys())
@@ -156,13 +156,7 @@ def vizualization(expense_log):
     "Budgets" : budgetvalue
     })
 
-def create_csv(csvfile):
-    df =  pd.read_csv(csvfile)
-    print(df.head())
-    
-    print(df.iloc[:5])
-    print("first five rows")
-    return df 
+    return df
 
 def main():
     with open("names.csv",'r') as file:
@@ -179,7 +173,9 @@ def main():
 
         expense_log_inst.expense_per_category()
         
-        vizualization(expense_log_inst)
+        df = dataframe(expense_log_inst)
+        print(df)
+
 
 if __name__ == "__main__":
     main()
