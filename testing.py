@@ -3,6 +3,8 @@ import random
 import pandas as pd
 import seaborn as sns
 
+
+
 class ExpenseTracker:
     """
     Obtains information of expenses inputed from user in order to keep track of monthly
