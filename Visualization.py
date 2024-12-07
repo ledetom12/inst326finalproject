@@ -35,7 +35,9 @@ class Plots:
 
     def plot_creations(self):
         expenses_and_budget_df = pd.DataFrame(self.budget_and_expenses_list_for_df)
-        print(expenses_and_budget_df)
+        print(expenses_and_budget_df.to_string())
+
+        
         expenses_and_budget_df.to_csv("Expenses and Budget.csv",index=False)
         
         expenses_and_budget_df_for_viz = pd.DataFrame(self.budget_and_expenses_list_for_viz)
