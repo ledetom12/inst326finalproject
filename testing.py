@@ -3,6 +3,8 @@ import random
 import pandas as pd
 import seaborn as sns
 
+
+
 class ExpenseTracker:
     """
     Obtains information of expenses inputed from user in order to keep track of monthly
@@ -107,28 +109,12 @@ class ExpenseLog:
         self.expense_tracker = ExpenseTracker(name)
         self.budget_limit = BudgetLimit(total_budget)
 
-    def expense_per_category(self):
-        all_expenses = self.expense_tracker.added_expenses()
-        print("\nExpense Per Category:")
-        for category,expense_amount in self.expense_tracker.list_expenses().items():
-            print(f"{category}: ${expense_amount}")
-        print(f"Total expenses = ${all_expenses}")
-        
 
-    def budget_per_category(self):
-        total_budgeted = 0
-        for budgeted_item in self.budget_limit.all_items().values():
-            total_budgeted += budgeted_item
-        print("\nBudget Per Category:")
-        for category,budget_amount in self.budget_limit.all_items().items():
-            print(f"{category}: ${budget_amount}")
-        print (f"Adjusted Budget Per Category Total = ${total_budgeted}")
-        
     def budget_random(self, budget):
         
         income = random.randint(4000,8000)
         budget.total_budget = income
-        print(f"Randomly generated total income: ${income}")
+        
 
         for category in self.expense_tracker.list_expenses().keys():
             try: 
@@ -140,7 +126,7 @@ class ExpenseLog:
         for category in self.expense_tracker.list_expenses().keys():
             randomexpense = random.randint(100, 1400)
             self.expense_tracker.input_monthly_expenses(category, randomexpense)
-        print("random expenses: complete")
+        
             
 def main():
     with open("Names.txt",'r') as file:
@@ -150,14 +136,8 @@ def main():
     expense_log_inst_list = []
 
     for name in list_of_names:
-        print(f"\nThese are the budgets and expenses for {name}\n")
-    
         expense_log_inst = ExpenseLog(total_budget=random.randint(2000,10000),name=name)
         expense_log_inst.budget_random(budget=expense_log_inst.budget_limit)
-
-        expense_log_inst.budget_per_category()
-
-        expense_log_inst.expense_per_category()
 
         expense_log_inst_list.append(expense_log_inst)
 
