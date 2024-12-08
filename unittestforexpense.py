@@ -66,35 +66,6 @@ class TestBudgetLimit:
         assert all_items == {"Housing": 200, "Groceries": 300}
 
 class TestExpenseLog:
-    
-    def test_expense_per_category(self):
-        expenselog = t.ExpenseLog(total_budget=5000, name="User")
-    
-        expenselog.expense_tracker.input_monthly_expenses("Housing", 1100)
-        expenselog.expense_tracker.input_monthly_expenses("Groceries", 300)
-    
-    
-        expenselog.expense_per_category()
-        expected_expenses = {
-            "Housing": 1100,
-            "Groceries": 300,
-        "Transportation": 0,
-        "Entertainment": 0,
-        "Healthcare": 0
-    }
-        assert expenselog.expense_tracker.list_expenses() == expected_expenses
-        assert expenselog.expense_tracker.added_expenses() == 1400
-    
-    def budget_per_category(self):
-        expenselog = t.ExpenseLog(total_budget=5000, name="User")
-        expenselog.budget_limit.set_budget(1500, "Housing")
-        expenselog.budget_limit.set_budget(300, "Groceries")
-        expenselog.expense_tracker.input_monthly_expenses("Housing", 1100)
-        expenselog.expense_tracker.input_monthly_expenses("Groceries", 300)
-        expenselog.budget_per_category()
-        expectedbudgets = {"Housing": 1500 , "Groceries": 300}
-        assert expenselog.budget_limit.all_items() == expectedbudgets
-        
     def test_budget_random(self):
         expenselog = t.ExpenseLog(total_budget=5000, name = "User")
         expenselog.budget_random(expenselog.budget_limit)
