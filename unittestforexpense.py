@@ -55,7 +55,7 @@ class TestBudgetLimit:
         assert "Housing" not in budget.budget_limit
         assert budget.totalallocated == 300
         message = budget.delete_category("Transportation")
-        assert message == "Category does not exist"
+        assert message == "Category Transportation does not exist"
     
     def test_all_items(self):
         budget = t.BudgetLimit(total_budget=1000)
