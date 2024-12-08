@@ -90,7 +90,7 @@ class BudgetLimit:
         
         if category in self.budget_limit:
             self.totalallocated -= self.budget_limit.pop(category)
-            return f"Removed  budgeting for {category}"
+            return f"Removed budgeting for {category}"
         else:
             return f"Category {category} does not exist "
 
