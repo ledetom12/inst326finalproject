@@ -1,18 +1,18 @@
 import pytest
-import testing as t
+import Budgets_and_Expenses as bae
 import Visualization as vz 
 import random
 
 
 class TestExpenseTracker:
     def test_monthly_expenses(self):
-        tracker = t.ExpenseTracker(name="User")
+        tracker = bae.ExpenseTracker(name="User")
         assert tracker.added_expenses() == 0 
         assert tracker.list_expenses() == {"Housing": 0,"Groceries": 0,"Transportation": 0,"Entertainment": 0,"Healthcare": 0}
     
     def test_add_expenses(self):
         
-        tracker = t.ExpenseTracker(name="User ")
+        tracker = bae.ExpenseTracker(name="User ")
         tracker.input_monthly_expenses("Housing", 1000)
         assert tracker.list_expenses()["Housing"] == 1000
         assert tracker.added_expenses() == 1000
@@ -22,13 +22,13 @@ class TestExpenseTracker:
 
 class TestBudgetLimit:
     def test_set_budget(self):
-        budget = t.BudgetLimit(total_budget=1000)
+        budget = bae.BudgetLimit(total_budget=1000)
         budget.set_budget(300, "Housing")
         assert budget.budget_limit["Housing"] == 300
         assert budget.totalallocated == 300
     
     def test_adjustments(self):
-        budget = t.BudgetLimit(total_budget=1000)
+        budget = bae.BudgetLimit(total_budget=1000)
         budget.set_budget(600, "Housing")
         budget.set_budget(500, "Groceries")
         adjusted_amounts = budget.adjustments()
@@ -39,7 +39,7 @@ class TestBudgetLimit:
         assert totaladjustment <= budget.total_budget * budget.threshold
     
     def test_update_budget_limits(self):
-        budget = t.BudgetLimit(total_budget=1000)
+        budget = bae.BudgetLimit(total_budget=1000)
         budget.set_budget(600, "Housing")
         budget.set_budget(500, "Groceries")
 
@@ -49,7 +49,7 @@ class TestBudgetLimit:
         assert budget.totalallocated == sum(adjusted_amount.values())
     
     def test_delete_category(self):
-        budget = t.BudgetLimit(total_budget=1000)
+        budget = bae.BudgetLimit(total_budget=1000)
         budget.set_budget(200, "Housing")
         budget.set_budget(300, "Groceries")
         message = budget.delete_category("Housing")
@@ -60,7 +60,7 @@ class TestBudgetLimit:
         assert message == "Category Transportation does not exist "
     
     def test_all_items(self):
-        budget = t.BudgetLimit(total_budget=1000)
+        budget = bae.BudgetLimit(total_budget=1000)
         budget.set_budget(200, "Housing")
         budget.set_budget(300, "Groceries")
 
@@ -69,7 +69,7 @@ class TestBudgetLimit:
 
 class TestExpenseLog:
     def test_budget_random(self):
-        expenselog = t.ExpenseLog(total_budget=5000, name = "User")
+        expenselog = bae.ExpenseLog(total_budget=5000, name = "User")
         expenselog.budget_random(expenselog.budget_limit)
         assert 4000 <= expenselog.budget_limit.total_budget <= 8000
         for budget in expenselog.budget_limit.all_items().values():
@@ -86,7 +86,7 @@ class TestExpenseLog:
         expense_log_inst_list = []
 
         for name in listofnames:
-            expense_log_inst = t.ExpenseLog(total_budget=random.randint(2000,10000),name=name)
+            expense_log_inst = bae.ExpenseLog(total_budget=random.randint(2000,10000),name=name)
             expense_log_inst.budget_random(budget=expense_log_inst.budget_limit)
 
             expense_log_inst_list.append(expense_log_inst)        
