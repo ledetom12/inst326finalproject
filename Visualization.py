@@ -20,6 +20,7 @@ class Plots:
 
                 expense_dict_for_df[category] = expenses
                 total_expenses += expenses
+                
             expense_dict_for_df["Total"] = total_expenses
             self.budget_and_expenses_list_for_df.append(expense_dict_for_df)
                 
@@ -29,6 +30,8 @@ class Plots:
                
                 budget_dict_for_df[category] = budgeting
                 total_budget += budgeting
+                
+
             budget_dict_for_df["Total"] = total_budget
             self.budget_and_expenses_list_for_df.append(budget_dict_for_df)
 
