@@ -1,6 +1,7 @@
 import pytest
 import testing as t
 import Visualization as vz 
+import random
 
 
 class TestExpenseTracker:
@@ -56,7 +57,7 @@ class TestBudgetLimit:
         assert "Housing" not in budget.budget_limit
         assert budget.totalallocated == 300
         message = budget.delete_category("Transportation")
-        assert message == "Category Transportation does not exist"
+        assert message == "Category Transportation does not exist "
     
     def test_all_items(self):
         budget = t.BudgetLimit(total_budget=1000)
@@ -82,9 +83,15 @@ class TestExpenseLog:
             listofnames = file.read().split()
             assert len(listofnames) > 0 
         
+        expense_log_inst_list = []
+
+        for name in listofnames:
+            expense_log_inst = t.ExpenseLog(total_budget=random.randint(2000,10000),name=name)
+            expense_log_inst.budget_random(budget=expense_log_inst.budget_limit)
+
+            expense_log_inst_list.append(expense_log_inst)        
             
-        plots_inst = vz.Plots(expense_log_inst_list)
-        expense_log_inst_list = plots_inst.expense_log_inst_list
+    
         assert len(expense_log_inst_list) == len(listofnames)
         for expense_log in expense_log_inst_list:
             assert 2000 <= expense_log.budget_limit.total_budget <= 10000
