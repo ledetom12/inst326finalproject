@@ -1,5 +1,6 @@
 import pytest
 import testing as t
+import Visualization as vz 
 
 
 class TestExpenseTracker:
@@ -75,3 +76,21 @@ class TestExpenseLog:
             
         for expense in expenselog.expense_tracker.list_expenses().values():
             assert 100 <= expense <= 1400
+    
+    def test_main(self):
+        with open("names.txt", "r") as file:
+            listofnames = file.read().split()
+            assert len(listofnames) > 0 
+        
+            
+        plots_inst = vz.Plots(expense_log_inst_list)
+        expense_log_inst_list = plots_inst.expense_log_inst_list
+        assert len(expense_log_inst_list) == len(listofnames)
+        for expense_log in expense_log_inst_list:
+            assert 2000 <= expense_log.budget_limit.total_budget <= 10000
+        
+        for budget in expense_log.budget_limit.all_items().values():
+            assert 400 <= budget <= 1000
+        
+        for expense in expense_log.expense_tracker.list_expenses().values():
+                assert 100 <= expense <= 1400
