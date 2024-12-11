@@ -7,6 +7,7 @@ import random
 class TestExpenseTracker:
     
     def test_monthly_expenses(self):
+        
         tracker = mb.ExpenseTracker(name="User")
         assert tracker.added_expenses() == 0 
         assert tracker.list_expenses() == {"Housing": 0,"Groceries": 0,"Transportation": 0,"Entertainment": 0,"Healthcare": 0}
@@ -22,6 +23,7 @@ class TestExpenseTracker:
         assert tracker.list_expenses() == {"Housing": 1000, "Groceries": 200, "Transportation": 150, "Entertainment": 0, "Healthcare": 0}
 
 class TestBudgetLimit:
+    
     def test_set_budget(self):
         budget = mb.BudgetLimit(total_budget=1000)
         budget.set_budget(300, "Housing")
@@ -29,6 +31,7 @@ class TestBudgetLimit:
         assert budget.totalallocated == 300
     
     def test_adjustments(self):
+        
         budget = mb.BudgetLimit(total_budget=1000)
         budget.set_budget(600, "Housing")
         budget.set_budget(500, "Groceries")
@@ -40,6 +43,7 @@ class TestBudgetLimit:
         assert totaladjustment <= budget.total_budget * budget.threshold
     
     def test_update_budget_limits(self):
+        
         budget = mb.BudgetLimit(total_budget=1000)
         budget.set_budget(600, "Housing")
         budget.set_budget(500, "Groceries")
@@ -50,6 +54,7 @@ class TestBudgetLimit:
         assert budget.totalallocated == sum(adjusted_amount.values())
     
     def test_delete_category(self):
+        
         budget = mb.BudgetLimit(total_budget=1000)
         budget.set_budget(200, "Housing")
         budget.set_budget(300, "Groceries")
@@ -61,6 +66,7 @@ class TestBudgetLimit:
         assert message == "Category Transportation does not exist "
     
     def test_all_items(self):
+        
         budget = mb.BudgetLimit(total_budget=1000)
         budget.set_budget(200, "Housing")
         budget.set_budget(300, "Groceries")
@@ -104,7 +110,14 @@ class TestExpenseLog:
                 assert 100 <= expense <= 1400
 
 class TestPlots:
+   
     def test_init(self):
         
-        expense_log_inst_list = [
-            mb.Expense
+        expense_log_inst_list = [ mb.ExpenseLog(total_budget=5000, name="User1"),
+                                                mb.ExpenseLog(total_budget=7000, name="User2"),]
+        for expense_log_inst in expense_log_inst_list:
+            expense_log_inst.budget_random(expense_log_inst.budget_limit)
+        
+        plots = vz.Plots(expense_log_inst_list)
+        assert len(plots.budget_and_expenses_list_for_df) == len(expense_log_inst_list) * 2
+        assert len(plots.budget_and_expenses_list_for_viz) > 0
