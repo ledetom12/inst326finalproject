@@ -2,6 +2,7 @@ import pytest
 import monthly_budget as mb
 import Visualization as vz 
 import random
+import os
 
 
 class TestExpenseTracker:
@@ -288,5 +289,48 @@ class TestPlots:
         
     
     def test_plot_creations(self):
+        """
+        Makes sure the dataframes and plots are being created appropriately
+        """
+        with open("names.txt", "r") as file:
+            listofnames = file.read().split() # split names in the list 
+            assert len(listofnames) > 0 # checked if the file has more than one name
         
+        # made an empty list to store ExpenseLog instances
+        expense_log_inst_list = []
+
+        # used for loop to iterate over the list of names 
+        for name in listofnames:
+        # Create an ExpenseLog instance with a random total budget for each user
+            expense_log_inst = mb.ExpenseLog(total_budget=random.randint(2000,10000),name=name)
+        # Randomly allocate budgets to different categories for the current user
+            expense_log_inst.budget_random(budget=expense_log_inst.budget_limit)
+
+        # Append the ExpenseLog instance to the list
+            expense_log_inst_list.append(expense_log_inst)    
+    
+        # creates instance of plot class to be used for testing and runs the class
+        plots = vz.Plots(expense_log_inst_list)
+        plots.plot_creations()
+
+        #creates categories for testing for the dataframe housing should be present but in the creation key should be present in the dataframe for visualization
+        category = "Housing"
+        category2 = "Key"
+
+        #tests if category is in the respective dataframes
+        assert category in plots.expenses_and_budget_df.columns
+
+        assert category2 in plots.expenses_and_budget_df_for_viz.columns
+        
+        #tests if the number of columns is correct when the dataframes are being created
+        assert len(plots.expenses_and_budget_df.columns) == 8
+
+        assert len(plots.expenses_and_budget_df_for_viz.columns) == 3
+
+        #tests if the files are being properly created when the class is ran
+        assert os.path.isfile("Expenses and Budget.csv")
+        
+        assert os.path.isfile("Expenses and Budget Visualization.png")
+
+            
         
