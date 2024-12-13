@@ -29,6 +29,8 @@ class Plots:
         self.budget_and_expenses_list_for_df = []
         # initializes the list for creating visualizations 
         self.budget_and_expenses_list_for_viz = []
+        self.expenses_and_budget_df = None
+        self.expenses_and_budget_df_for_viz = None
         
         # for loop to iterate through each ExpenseLog instance
         for each_expense_inst in expense_log_inst_list:
@@ -95,19 +97,19 @@ class Plots:
         """
         
         # converts the budget and expenses data into a dataframe
-        expenses_and_budget_df = pd.DataFrame(self.budget_and_expenses_list_for_df)
+        self.expenses_and_budget_df = pd.DataFrame(self.budget_and_expenses_list_for_df)
         
         # prints the dataframe 
-        print(expenses_and_budget_df.to_string())
+        print(self.expenses_and_budget_df.to_string())
 
         # saves dataframe into a csv file 
-        expenses_and_budget_df.to_csv("Expenses and Budget.csv",index=False) 
+        self.expenses_and_budget_df.to_csv("Expenses and Budget.csv",index=False) 
         
         # converts visualization into a dataframe for plotting
-        expenses_and_budget_df_for_viz = pd.DataFrame(self.budget_and_expenses_list_for_viz)
+        self.expenses_and_budget_df_for_viz = pd.DataFrame(self.budget_and_expenses_list_for_viz)
         
         # Creates a bar plot showing budgets and expenses by category, grouped by "Key".
-        expenses_and_budget_plot = sns.barplot(data = expenses_and_budget_df_for_viz, x = "Category", y = "Amount", hue = "Key")
+        expenses_and_budget_plot = sns.barplot(data = self.expenses_and_budget_df_for_viz, x = "Category", y = "Amount", hue = "Key")
         
         # Saves the generated bar plot as a PNG file.
         expenses_and_budget_plot.get_figure().savefig("Expenses and Budget Visualization.png", format = "png")
