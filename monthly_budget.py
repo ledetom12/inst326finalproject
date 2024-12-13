@@ -14,6 +14,7 @@ class ExpenseTracker:
     all_expenses(dict): Dictionary to store expenses for categories 
     name(str): name of user 
     """
+    
     def __init__(self,name):
        
         """
